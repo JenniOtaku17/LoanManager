@@ -83,8 +83,12 @@ input[type=number] { -moz-appearance:textfield; }
         }
     }
 
-    tbody{
-        border-bottom: 1px solid #EFEFEF;
+    tbody:last-child{
+        tr{
+            td{
+                border-bottom: 1px solid #d8dad8;
+            }
+        }
     }
 }
 

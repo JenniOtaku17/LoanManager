@@ -175,7 +175,7 @@
                     }
 
                     this.$print(response);
-                    this.closeDialog();
+                    this.close();
 
                 }catch(error){
                     this.$print(error);
