@@ -83,7 +83,7 @@
   
     async mounted(){
         this.user = await this.$store.state.userManager.user;
-        //this.getAll();
+        this.getAll();
     },
   
     data() {
@@ -110,7 +110,7 @@
         async getAll() {
             try{
                 this.isLoading = true;
-                let clientes = await this.$api.get(`api/dimension/GetAllDimensionesMyEmpresa`);
+                let clientes = await this.$api.get(`api/cliente`);
 
                 this.clientes = await clientes.data;
                 this.$print(this.clientes);
@@ -140,9 +140,9 @@
         async deleteCliente(cliente){
             try{
 
-                let result = await this.$confirm('Va a emilinar un cliente', `Está seguro que desea eliminar al cliente ${cliente.nombre}?`)
+                let result = await this.$confirm('Va a emilinar un cliente', `Está seguro que desea eliminar al cliente ${cliente.nombre} ${cliente.apellido}?`)
                 if(result.isConfirmed){
-                    await this.$api.delete("api/Entidad/DeleteEntidad/"+cliente.clienteId );
+                    await this.$api.delete("api/cliente/changestatus/"+cliente.clienteId );
                     this.getAll();
                 }
 
@@ -163,7 +163,9 @@
         
                 return clientes
                 .filter(
-                    e => e.nombre.toLowerCase().includes(textoFiltro.toLowerCase())
+                    e => e.nombre.toLowerCase().includes(textoFiltro.toLowerCase()) ||
+                         e.apellido.toLowerCase().includes(textoFiltro.toLowerCase()) ||
+                         e.cedula.toLowerCase().includes(textoFiltro.toLowerCase())
                 )
             }catch(error){
                 console.log(error);
