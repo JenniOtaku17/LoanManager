@@ -42,12 +42,14 @@
                 <template v-slot:body="{ items }" v-if="filteredClientes && filteredClientes.length > 0">
                   <tbody>
                     <tr v-for="item in items" class="puntero" :key="item.departamentoId">
+                        <td>{{ item.clienteId }}</td>
                         <td>{{ item.cedula }}</td>
                         <td>{{ item.nombre }} {{ item.apellido }}</td>
-                        <td>{{ item.telefono }}</td>
+                        <td>{{ formatPhoneNumber(item.telefono) }}</td>
                         <td align="center">
+                          <v-btn class="elevation-0" color="primary" icon small @click="verDetalle(item.clienteId)"><v-icon>mdi-account-eye-outline</v-icon></v-btn>
                           <v-btn class="elevation-0" color="secondary" icon small @click="openCliente(true, item)"><v-icon>mdi-pencil-circle-outline</v-icon></v-btn>
-                          <v-btn class="elevation-0" color="error" icon small @click="deleteDepartamento(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
+                          <v-btn class="elevation-0" color="error" icon small @click="deleteCliente(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
                         </td>
                     </tr>
                   </tbody>
@@ -93,6 +95,7 @@
             filterText: '',
             user: null,
             headers: [
+                { text: "Código", value: 'clienteId' },
                 { text: "Cédula", value: 'cedula' },
                 { text: "Nombre", value: "nombre", align: "start" },
                 { text: "Teléfono", value: "telefono", align: "start" },
@@ -121,6 +124,10 @@
             }
             
         },
+
+        verDetalle( id ){
+            this.$router.push({ path: '/cliente/detalle', query: { id } })
+        },
     
         openCliente( toEdit, obj){
             if(toEdit){
@@ -136,13 +143,26 @@
             this.dialog = false;
             this.editable = null;
         },
+
+        formatPhoneNumber( str ){
+            let cleaned = ('' + str).replace(/\D/g, '');
+    
+            let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+            
+            if (match) {
+            let intlCode = (match[1] ? '+1 ' : '')
+            return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('')
+            }
+            
+            return str;
+        },
     
         async deleteCliente(cliente){
             try{
 
                 let result = await this.$confirm('Va a emilinar un cliente', `Está seguro que desea eliminar al cliente ${cliente.nombre} ${cliente.apellido}?`)
                 if(result.isConfirmed){
-                    await this.$api.delete("api/cliente/changestatus/"+cliente.clienteId );
+                    await this.$api.put("api/cliente/changestatus/"+cliente.clienteId );
                     this.getAll();
                 }
 
