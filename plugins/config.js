@@ -2,13 +2,8 @@ import Vue from 'vue';
 
 const config = {
     version: '1.1',
-    host: "http://10.0.0.247:83/",
+    host: "https://loanmanagerapi0.azurewebsites.net/",
     testEnvironment: true
-}
-
-if(process.env.NODE_ENV === 'development') {
-    config.testEnvironment = true;
-    config.host = "http://10.0.0.247:83/";
 }
 
 function print( info ){

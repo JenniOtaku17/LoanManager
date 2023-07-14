@@ -169,9 +169,9 @@
                     let response;
 
                     if(this.editable == null){
-                        response = await this.$api.post("api/Usuario/CreateUser", usuario);
+                        response = await this.$api.post("api/cliente", this.cliente);
                     }else{
-                        response = await this.$api.put("api/Usuario/EditUsuario", usuario);
+                        response = await this.$api.put("api/cliente", this.cliente);
                     }
 
                     this.$print(response);
