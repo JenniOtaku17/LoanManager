@@ -137,7 +137,7 @@
             this.editable = null;
         },
     
-        async deleteDepartamento(cliente){
+        async deleteCliente(cliente){
             try{
 
                 let result = await this.$confirm('Va a emilinar un cliente', `Está seguro que desea eliminar al cliente ${cliente.nombre}?`)
