@@ -1,6 +1,6 @@
 <template>
 
-    <v-container class="px-6 pb-10">
+    <v-container class="px-6 pb-10 pageEvaluacion">
       <v-row class="px-4">
         <v-col cols="12" sm="5" class="text-left">
             <h3 class="primary--text moduleTitle">
@@ -191,8 +191,7 @@
                     this.isLoading = true;
 
                     let cuotaFI  = parseFloat(this.form.monto) / this.calcDiff(this.form.frecuenciaInteres) +
-                    (parseFloat(this.form.monto) / this.calcDiff(this.form.frecuenciaInteres))*(parseFloat(this.form.interes)/100);
-
+                    (parseFloat(this.form.monto))*(parseFloat(this.form.interes)/100);
                     let cuotaFP;
 
                     switch(this.form.frecuenciaInteres){
@@ -251,11 +250,11 @@
 
                     let frecuenciaPago = this.frecuencias.find(x=> x.key == this.form.frecuenciaPago)
 
-                    if(cuotaFP <= ((this.form.ingresos - this.form.egresos) * 0.50)){
+                    if(cuotaFP <= ((this.form.ingresos - this.form.egresos) * 0.70)){
                         this.$alert('success', 'Evaluación Aprobada', `El cliente estaría pagando una cuota de ${this.numberFormat(Math.round(cuotaFP))} de forma ${frecuenciaPago.nombre}`, null)
                     
                     }else{
-                        this.$alert('error', 'Evaluación Denegada', `El cliente estaría pagando una cuota de ${this.numberFormat(Math.round(cuotaFP))} de forma ${frecuenciaPago.nombre}, lo cual excede al 50% del de sus ingresos netos`, null)
+                        this.$alert('error', 'Evaluación Denegada', `El cliente estaría pagando una cuota de ${this.numberFormat(Math.round(cuotaFP))} de forma ${frecuenciaPago.nombre}, lo cual excede al 70% del de sus ingresos netos`, null)
                     }
 
                     this.isLoading = false;
@@ -303,9 +302,12 @@
   
   <style lang='scss' >
 
+  .pageEvaluacion{
+
     .moduleTitle{
         font-size: 22px;
         font-weight: 500;
     }
+  }
 
   </style>

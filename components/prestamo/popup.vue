@@ -7,8 +7,20 @@
                 <v-spacer></v-spacer>
                 <v-btn icon @click="clean"><v-icon>mdi-close</v-icon></v-btn>
             </v-card-title>
-            <v-card-text class="pt-4 pb-9 px-10">
+            <v-card-text class="pt-3 pb-8 px-10">
                 <v-form ref="form">
+
+                    <v-row >
+                        <v-col cols="12" md="6" class="py-0">
+                            <span class="inputTitle" >Concepto</span>
+                            <v-text-field  v-model="prestamo.concepto" dense outlined class="textFieldCustom" color="secondary" :rules="inputRules"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6" class="py-0">
+                            <span class="inputTitle" >Cliente</span>
+                            <v-select v-model="prestamo.clienteId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="clientes" :item-text="nombreCompleto" item-value="clienteId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
+                        </v-col>
+                    </v-row>
+
                     <v-row>
                         <v-col cols="12" md="6" class="py-0">
                             <span class="inputTitle" >Monto</span>
@@ -19,6 +31,18 @@
                             <v-text-field  v-model="prestamo.interes"  dense outlined class="textFieldCustom" color="secondary" :rules="inputRules"></v-text-field>
                         </v-col>
                     </v-row>
+
+                    <v-row >
+                        <v-col cols="12" md="6" class="py-0">
+                            <span class="inputTitle" >Frecuencia de Interés</span>
+                            <v-select v-model="prestamo.frecuenciaInteresId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="frecuencias" item-text="nombre" item-value="frecuenciaId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
+                        </v-col>
+                        <v-col cols="12" md="6" class="py-0">
+                            <span class="inputTitle" >Frecuencia de Pagos</span>
+                            <v-select v-model="prestamo.frecuenciaPagoId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="frecuencias" item-text="nombre" item-value="frecuenciaId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
+                        </v-col>
+                    </v-row>
+
                     <v-row>
                         <v-col cols="12" md="6" class="py-0">
                             <span class="inputTitle" >Fecha de inicio</span>
@@ -26,14 +50,14 @@
                                 ref="menuFechaInicio"
                                 v-model="menuFechaInicio"
                                 :close-on-content-click="false"
-                                :return-value.sync="prestamo.fechaInicio"
+                                :return-value.sync="prestamo.fecha"
                                 transition="scale-transition"
                                 offset-y  
                                 min-width="290px"
                                 >
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                    v-model="prestamo.fechaInicio" 
+                                    v-model="prestamo.fecha" 
                                     outlined readonly append-icon="mdi-calendar"
                                     dense class="textFieldCustom fechaCustom" color="secondary"
                                     v-bind="attrs"
@@ -41,7 +65,7 @@
                                     ></v-text-field>
                                 </template>
                                 <v-date-picker
-                                    v-model="prestamo.fechaInicio"
+                                    v-model="prestamo.fecha"
                                     no-title
                                     scrollable
                                 >
@@ -52,7 +76,7 @@
                                     <v-btn
                                     text elevation="0" 
                                     color="primary white--text"
-                                    @click="$refs.menuFechaInicio.save(prestamo.fechaInicio)"
+                                    @click="$refs.menuFechaInicio.save(prestamo.fecha)"
                                     >Guardar</v-btn
                                     >
                                 </v-date-picker>
@@ -97,39 +121,22 @@
                             </v-menu>
                         </v-col>
                     </v-row>
-                    <v-row >
-                        <v-col cols="12" md="6" class="py-0">
-                            <span class="inputTitle" >Concepto</span>
-                            <v-text-field  v-model="prestamo.concepto" dense outlined class="textFieldCustom" color="secondary" :rules="inputRules"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6" class="py-0">
-                            <span class="inputTitle" >Cliente</span>
-                            <v-select v-model="prestamo.clienteId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="clientes" item-text="nombre" item-value="clienteId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row >
-                        <v-col cols="12" md="6" class="py-0">
-                            <span class="inputTitle" >Frecuencia de Interés</span>
-                            <v-select v-model="prestamo.frecuenciaInteresId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="frecuencias" item-text="nombre" item-value="frecuenciaId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="6" class="py-0">
-                            <span class="inputTitle" >Frecuencia de Pagos</span>
-                            <v-select v-model="prestamo.frecuenciaPagoId" dense outlined :rules="inputRules" class="textFieldCustom" color="secondary" :items="frecuencias" item-text="nombre" item-value="frecuenciaId" append-icon="mdi-chevron-down" :disabled="!mounted"></v-select>
-                        </v-col>
-                    </v-row>
+                    
                     <v-row >
                         <v-col cols="12" md="12" class="py-0">
                             <span class="inputTitle" >Descripción</span>
-                            <v-textarea solo name="input-7-4" v-model="prestamo.descripcion" dense outlined class="textAreaCustom" color="secondary" ></v-textarea>
+                            <v-textarea outlined name="input-7-4" rows="2" v-model="prestamo.descripcion" dense class="textAreaCustom" color="secondary" ></v-textarea>
                         </v-col>
                     </v-row>
+
                     <v-row>
-                        <v-col cols="12" md="12" sm="12" justify="end" align="end">
+                        <v-col cols="12" md="12" sm="12" justify="end" align="end" class="py-0">
                             <v-btn class="white--text" :disabled="isCreating" color="primary" elevation="0" @click="guardar">
                                 Guardar cambios
                             </v-btn>
                         </v-col>
                     </v-row>
+
                 </v-form>
             </v-card-text>
         </v-card>
@@ -137,7 +144,9 @@
     </div>
   </template>
   <script>
-  
+
+  import moment from 'moment';
+
   export default {
     props: [
         "activador",
@@ -149,7 +158,7 @@
         prestamo: {
             monto: null,
             interes: null,
-            fechaInicio: null,
+            fecha: null,
             fechaFin: null,
             concepto: null,
             descripcion: null,
@@ -181,19 +190,22 @@
 
     },
     methods: {
+
+        nombreCompleto: item => item.nombre + ' ' + item.apellido,
+
         clean(){
             this.prestamo = {
-            monto: null,
-            interes: null,
-            fechaInicio: null,
-            fechaFin: null,
-            concepto: null,
-            descripcion: null,
-            clienteId: null,
-            frecuenciaInteresId: null,
-            frecuenciaPagoId: null,
-            estado: true
-        },
+                monto: null,
+                interes: null,
+                fechaInicio: null,
+                fechaFin: null,
+                concepto: null,
+                descripcion: null,
+                clienteId: null,
+                frecuenciaInteresId: null,
+                frecuenciaPagoId: null,
+                estado: true
+            },
             this.$emit("actualizar", false);
         },
 
@@ -219,11 +231,13 @@
                 try{
                     this.isCreating = true;
                     let response;
+                    let prestamo = this.prestamo;
+                    prestamo.total = await this.getTotal();
 
                     if(this.editable == null){
-                        response = await this.$api.post("api/prestamo", this.prestamo);
+                        response = await this.$api.post("api/prestamo", prestamo);
                     }else{
-                        response = await this.$api.put("api/prestamo", this.prestamo);
+                        response = await this.$api.put("api/prestamo", prestamo);
                     }
 
                     this.$print(response);
@@ -244,6 +258,33 @@
             }
             
         },
+
+        async getTotal() {
+            try{
+                    
+                let frecuenciaInteres = await this.frecuencias.find(x=>x.frecuenciaId == this.prestamo.frecuenciaInteresId)
+                this.$print(frecuenciaInteres)
+
+                let cuotaFI  =  parseFloat(this.prestamo.monto) / await this.calcDiff(frecuenciaInteres.key) +
+                (parseFloat(this.prestamo.monto))*(parseFloat(this.prestamo.interes)/100);
+
+                let total = cuotaFI * await this.calcDiff(frecuenciaInteres.key);
+                this.$print(total);
+
+                return total;
+
+            }catch(error){
+                this.$print(error);
+            }
+            
+        },
+
+        calcDiff( frecuencia ){
+            let fechaInicio = moment(this.prestamo.fecha);
+            let fechaFin = moment(this.prestamo.fechaFin);
+            return fechaFin.diff(fechaInicio, frecuencia )
+        },
+
         
         async getClientes() {
             try{

@@ -60,6 +60,7 @@ input[type=number] { -moz-appearance:textfield; }
     .v-input__slot{
         border-radius: 10px;
     }
+
 }
 
 .not-form-input{
@@ -86,6 +87,7 @@ input[type=number] { -moz-appearance:textfield; }
             th{
                 background-color: #F7F8F9!important;
                 color:#144659!important;
+                white-space: pre;
             }
 
             th:first-child { 

@@ -1,13 +1,13 @@
 <template>
 
-    <v-container class="px-6 pb-10">
+    <v-container class="px-6 pb-10 pagePrestamo">
       <v-row class="px-4">
         <v-col cols="12" sm="5" class="text-left">
             <h3 class="primary--text moduleTitle">
                 Módulo de Préstamos &nbsp;<v-icon color="primary" class="mb-1">mdi-account-group</v-icon>
             </h3>
             <h5 class="text--secondary">
-                Administra todos los prestamos de tu empresa, puedes añadir uno nuevo o modificar o eliminar alguno existente.
+                Administra todos los préstamos de tu empresa, puedes añadir uno nuevo o modificar o eliminar alguno existente.
             </h5>
         </v-col>
         <v-col cols="12" sm="7" class="text-right">
@@ -43,13 +43,16 @@
                   <tbody>
                     <tr v-for="item in items" class="puntero" :key="item.departamentoId">
                         <td>{{ item.prestamoId }}</td>
-                        <td>{{ item.clienteId }}</td>
+                        <td>
+                            <span v-if="item.cliente">{{ item.cliente.nombre }} {{ item.cliente.apellido }}</span>
+                        </td>
                         <td>{{ item.concepto }}</td>
-                        <td>{{ item.monto }}</td>
-                        <td>{{ item.interes }}%</td>
-                        <td>{{ item.fecha }} - {{ item.fechaFin }}</td>
-                        <td align="center">
-                          <v-btn class="elevation-0" color="primary" icon small @click="verDetalle(item.prestamoId)"><v-icon>?</v-icon></v-btn>
+                        <td align="end">{{ numberFormat(item.monto) }}</td>
+                        <td align="end">{{ item.interes }}%</td>
+                        <td align="end">{{ numberFormat(item.total) }}</td>
+                        <td align="center">{{ formatDate(item.fecha, false) }} - {{ formatDate(item.fechaFin, false) }}</td>
+                        <td align="center" style="white-space: pre;">
+                          <v-btn class="elevation-0" color="primary" icon small @click="verDetalle(item.prestamoId)"><v-icon>mdi-file-eye</v-icon></v-btn>
                           <v-btn class="elevation-0" color="secondary" icon small @click="openPrestamo(true, item)"><v-icon>mdi-pencil-circle-outline</v-icon></v-btn>
                           <v-btn class="elevation-0" color="error" icon small @click="deletePrestamo(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
                         </td>
@@ -97,11 +100,12 @@
             user: null,
             headers: [
                 { text: "Código", value: 'prestamoId' },
-                { text: "Cliente", value: 'clienteId' },
+                { text: "Cliente", value: 'clienteId', sortable: false },
                 { text: "Concepto", value: 'concepto' },
-                { text: "Monto", value: 'monto' },
-                { text: "Interés", value: 'interes' },
-                { text: "Rango de fecha", value: 'fecha' },
+                { text: "Monto", value: 'monto', align: 'end' },
+                { text: "Interés", value: 'interes', align: 'end' },
+                { text: "Total", value: 'total', align: 'end' },
+                { text: "Rango de fecha", value: 'fecha', align: 'center' },
                 { text: "Acciones", align:'center', sortable: false }
             ],
             dialog: false,
@@ -166,6 +170,19 @@
                 this.$alert('error', 'Préstamo', text, null);
             }
         },
+
+        numberFormat(amount){
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+            return formatter.format(amount);
+
+        },
+
+        formatDate( date, hours){
+            return this.$formatDate(date, hours);
+        },
     
         filtro(prestamos,textoFiltro){
             try{
@@ -195,9 +212,12 @@
   
   <style lang='scss' >
 
+  .pagePrestamo{
+
     .moduleTitle{
         font-size: 22px;
         font-weight: 500;
     }
+  }
 
   </style>

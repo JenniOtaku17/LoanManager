@@ -110,6 +110,7 @@
         cliente: {
             cedula: null,
             nombre: null,
+            correo: null,
             apellido: null,
             telefono: null,
             direccion: null,
