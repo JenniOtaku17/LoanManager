@@ -48,6 +48,20 @@ input[type=number] { -moz-appearance:textfield; }
     
 }
 
+.textAreaCustom{
+    .v-input__control{
+        font-size: 14px;
+    }
+
+    label{    
+        font-size: 14px;
+    }
+    
+    .v-input__slot{
+        border-radius: 10px;
+    }
+}
+
 .not-form-input{
     .v-text-field__details{
         margin-bottom: 0px;

@@ -42,12 +42,16 @@
                 <template v-slot:body="{ items }" v-if="filteredPrestamos && filteredPrestamos.length > 0">
                   <tbody>
                     <tr v-for="item in items" class="puntero" :key="item.departamentoId">
-                        <td>{{ item.cedula }}</td>
-                        <td>{{ item.nombre }} {{ item.apellido }}</td>
-                        <td>{{ item.telefono }}</td>
+                        <td>{{ item.prestamoId }}</td>
+                        <td>{{ item.clienteId }}</td>
+                        <td>{{ item.concepto }}</td>
+                        <td>{{ item.monto }}</td>
+                        <td>{{ item.interes }}%</td>
+                        <td>{{ item.fecha }} - {{ item.fechaFin }}</td>
                         <td align="center">
+                          <v-btn class="elevation-0" color="primary" icon small @click="verDetalle(item.prestamoId)"><v-icon>?</v-icon></v-btn>
                           <v-btn class="elevation-0" color="secondary" icon small @click="openPrestamo(true, item)"><v-icon>mdi-pencil-circle-outline</v-icon></v-btn>
-                          <v-btn class="elevation-0" color="error" icon small @click="deleteDepartamento(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
+                          <v-btn class="elevation-0" color="error" icon small @click="deletePrestamo(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
                         </td>
                     </tr>
                   </tbody>
@@ -74,7 +78,6 @@
   import popup from "~/components/prestamo/popup";
   
   export default {
-
     middleware: "auth-this",
   
     components: {
@@ -83,7 +86,7 @@
   
     async mounted(){
         this.user = await this.$store.state.userManager.user;
-        //this.getAll();
+        this.getAll();
     },
   
     data() {
@@ -93,9 +96,12 @@
             filterText: '',
             user: null,
             headers: [
-                { text: "Cédula", value: 'cedula' },
-                { text: "Nombre", value: "nombre", align: "start" },
-                { text: "Teléfono", value: "telefono", align: "start" },
+                { text: "Código", value: 'prestamoId' },
+                { text: "Cliente", value: 'clienteId' },
+                { text: "Concepto", value: 'concepto' },
+                { text: "Monto", value: 'monto' },
+                { text: "Interés", value: 'interes' },
+                { text: "Rango de fecha", value: 'fecha' },
                 { text: "Acciones", align:'center', sortable: false }
             ],
             dialog: false,
@@ -110,9 +116,9 @@
         async getAll() {
             try{
                 this.isLoading = true;
-                let prestamos = await this.$api.get(`api/dimension/GetAllDimensionesMyEmpresa`);
+                let prestamos = await this.$api.get(`api/prestamo`);
 
-                this.prestamos = await prestamos.data;
+                this.prestamos = await prestamos.data.filter((p)=>p.estado == true);
                 this.$print(this.prestamos);
                 this.isLoading = false;
 
@@ -122,6 +128,10 @@
             
         },
     
+        verDetalle( id ){
+            this.$router.push({ path: '/prestamo/detalle', query: { id } })
+        },
+
         openPrestamo( toEdit, obj){
             if(toEdit){
                 this.editable = obj;
@@ -142,7 +152,7 @@
 
                 let result = await this.$confirm('Va a eliminar un préstamo', `Está seguro que desea eliminar al préstamo ${prestamo.nombre}?`)
                 if(result.isConfirmed){
-                    await this.$api.delete("api/Entidad/DeleteEntidad/"+prestamo.prestamoId );
+                    await this.$api.put("api/prestamo/changestatus/"+prestamo.prestamoId );
                     this.getAll();
                 }
 
