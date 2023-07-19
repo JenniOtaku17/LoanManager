@@ -1,6 +1,6 @@
 <template>
 
-    <v-container class="px-6 pb-10">
+    <v-container class="px-6 pb-10 pageCliente">
       <v-row class="px-4">
         <v-col cols="12" sm="5" class="text-left">
             <h3 class="primary--text moduleTitle">
@@ -192,6 +192,7 @@
             }
     
         },
+        
   
     },
   
@@ -207,9 +208,12 @@
   
   <style lang='scss' >
 
+  .pageCliente{
+
     .moduleTitle{
         font-size: 22px;
         font-weight: 500;
     }
+  }
 
   </style>

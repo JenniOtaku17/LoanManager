@@ -99,6 +99,11 @@ export default {
           title: 'Préstamos',
           to: '/prestamo'
         },
+        {
+          icon: 'mdi-file-chart',
+          title: 'Reporteria',
+          to: '/reporteria'
+        },
       ],
       miniVariant: false,
       title: 'Incidencias APP',
