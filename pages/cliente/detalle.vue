@@ -139,9 +139,14 @@
         </v-col>
       </v-row>
     </v-container>
+    
+    <loading v-else/>
+
   </template>
   
   <script>
+
+  import loading from "~/components/utils/loading";
   
   export default {
 
@@ -150,6 +155,10 @@
     async mounted(){
         this.user = await this.$store.state.userManager.user;
         this.getAll();
+    },
+
+    components:{
+        loading
     },
   
     data() {

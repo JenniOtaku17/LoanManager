@@ -151,17 +151,22 @@
       </v-row>
       <popup v-if="dialog" :activador="dialog" @actualizar="actualizar" :editable="editable" />
     </v-container>
+
+    <loading v-else/>
+
   </template>
   
   <script>
   import popup from "~/components/pago/popup";
+  import loading from "~/components/utils/loading";
   
   export default {
 
     middleware: "auth-this",
   
     components: {
-      popup
+      popup,
+      loading
     },
   
     async mounted(){
