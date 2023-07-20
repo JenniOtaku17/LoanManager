@@ -1,8 +1,8 @@
 <template>
     <v-container class="loadingContainer">
-        <div class='ball bounce'></div>
-        <div class='ball bounce '></div>
-        <div class='ball bounce'></div> 
+        <div class='ballLoading bounceLoading'></div>
+        <div class='ballLoading bounceLoading '></div>
+        <div class='ballLoading bounceLoading'></div> 
     </v-container>
   </template>
   
@@ -31,7 +31,7 @@
     justify-content: center;
   }
 
-    .ball {
+    .ballLoading {
         position: relative;
         margin-left:10px;
         margin-right:10px;
@@ -44,18 +44,18 @@
         animation-direction: alternate;
     }
 
-    .bounce:nth-child(1) {
+    .bounceLoading:nth-child(1) {
         animation-delay:-200ms;
     }
-    .bounce:nth-child(2) {
+    .bounceLoading:nth-child(2) {
         animation-delay: -300ms;
     }
-    .bounce:nth-child(3) {
+    .bounceLoading:nth-child(3) {
         animation-delay: -400ms;
     }
 
 
-    @keyframes bounce {
+    @keyframes bounceLoading {
         from {
             transform: translateY(30px);
             background: #24A645;
