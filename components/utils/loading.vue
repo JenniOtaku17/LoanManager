@@ -55,7 +55,7 @@
     }
 
 
-    @keyframes bounceLoading {
+    @keyframes bounce {
         from {
             transform: translateY(30px);
             background: #24A645;
