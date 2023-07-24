@@ -17,7 +17,7 @@
             <span class="inputTitle" >Tipo de Reporte</span>
             <v-select v-model="tipoReporte" dense outlined class="textFieldCustom" color="secondary" :items="reportes" item-text="nombre" item-value="id" append-icon="mdi-chevron-down"></v-select>
         </v-col>
-        <v-col cols="12" md="2" class="py-0" v-if="tipoReporte">
+        <v-col cols="12" md="2" class="py-0" v-if="tipoReporte == 'balancePrestamos'">
             <span class="inputTitle" >Desde</span>
             <v-menu
                 ref="menuDesde"
@@ -55,7 +55,7 @@
                 </v-date-picker>
             </v-menu>
         </v-col>
-        <v-col cols="12" md="2" class="py-0" v-if="tipoReporte">
+        <v-col cols="12" md="2" class="py-0" v-if="tipoReporte == 'balancePrestamos'">
             <span class="inputTitle" >Hasta</span>
             <v-menu
                 ref="menuHasta"
@@ -102,7 +102,7 @@
             <v-select v-model="prestamo" dense outlined class="textFieldCustom" color="secondary" :items="prestamos" item-text="concepto" item-value="prestamoId" append-icon="mdi-chevron-down"></v-select>
         </v-col>
         <v-col cols="12" md="1" class="py-0">
-            <v-btn fab elevation="0" :disabled="loading" style="border-radius: 50%;" small color="primary white--text" id="generar" @click="getReport()">
+            <v-btn fab elevation="0" :disabled="isLoading" style="border-radius: 50%;" small color="primary white--text" id="generar" @click="getReport()">
                 <v-icon>mdi-magnify</v-icon>
             </v-btn>
         </v-col>
@@ -162,7 +162,6 @@
             hasta: null,
             cliente: null,
             prestamo: null,
-
             reporte: null
         };
     },
@@ -175,25 +174,22 @@
                 this.isLoading = true;
 
                 if(this.tipoReporte == 'balancePrestamos'){
-                    let prestamos = await this.$api.get(`api/prestamo`);
-                    let activos = await prestamos.data.filter((p)=>p.estado == true);
+                    let data = {
+                        desde: this.desde,
+                        hasta: this.hasta
+                    }
+                    let reporte = await this.$api.post(`api/report/balance_prestamos`, data);
+                    this.reporte = reporte.data;
 
-                    activos.map(async(prestamo)=> {
-                        let pagos = 0;
-                        await prestamo.pagos.map((pago)=>{
-                            pagos = pagos + parseFloat(pago.monto)
-                        });
-                        prestamo.balance = prestamo.total - prestamo.pagos;
-                    })
-                    
-                    this.reporte = activos;
+                }else if(this.tipoReporte == 'pagosPrestamo'){
+                    let reporte = await this.$api.get(`api/report/pagos_prestamos/${this.prestamo}`);
+                    this.reporte = reporte.data;
 
-                }else if(this.tipoReporte == 'balancePrestamos'){
-
-                }else if(this.tipoReporte == 'balancePrestamos'){
+                }else if(this.tipoReporte == 'prestamosCliente'){
+                    let reporte = await this.$api.get(`api/report/prestamos_cliente/${this.cliente}`);
+                    this.reporte = reporte.data;
 
                 }
-
                 this.$print(this.reporte);
 
             }catch(error){
