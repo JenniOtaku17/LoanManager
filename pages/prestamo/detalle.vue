@@ -134,11 +134,11 @@
                       </template>
                     </v-data-table>
                   </v-card-text>
-                  <v-row class="px-5" v-if="pagos">
+                  <v-row class="px-5">
                       <v-pagination
                           v-model="page"
                           class="my-4"
-                          :length="pagos.length"
+                          :length="paginationLength"
                           circle
                           :total-visible="6"
                       ></v-pagination>
@@ -203,10 +203,12 @@
         async getPagos() {
             try{
                 this.isLoading = true;
+                this.page = 1;
                 let id = this.$route.query.id;
                 let pagos = await this.$api.get(`api/pago`);
 
                 this.pagos = await pagos.data.filter((p)=> p.prestamoId == id && p.estado == true);
+                this.paginationLength = Math.ceil(this.pagos.length/this.itemsPerPage);
                 this.$print(this.pagos);
                 this.isLoading = false;
 

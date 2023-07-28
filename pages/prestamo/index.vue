@@ -61,11 +61,11 @@
                 </template>
               </v-data-table>
             </v-card-text>
-            <v-row class="px-5" v-if="filteredPrestamos">
+            <v-row class="px-5">
                 <v-pagination
                     v-model="page"
                     class="my-4"
-                    :length="filteredPrestamos.length"
+                    :length="paginationLength"
                     circle
                     :total-visible="6"
                 ></v-pagination>
@@ -120,9 +120,11 @@
         async getAll() {
             try{
                 this.isLoading = true;
+                this.page = 1;
                 let prestamos = await this.$api.get(`api/prestamo`);
 
                 this.prestamos = await prestamos.data.filter((p)=>p.estado == true);
+                this.paginationLength = Math.ceil(this.prestamos.length/this.itemsPerPage);
                 this.$print(this.prestamos);
                 this.isLoading = false;
 

@@ -56,11 +56,11 @@
                 </template>
               </v-data-table>
             </v-card-text>
-            <v-row class="px-5" v-if="filteredClientes">
+            <v-row class="px-5">
                 <v-pagination
                     v-model="page"
                     class="my-4"
-                    :length="filteredClientes.length"
+                    :length="paginationLength"
                     circle
                     :total-visible="6"
                 ></v-pagination>
@@ -105,6 +105,7 @@
             editable: null,
             itemsPerPage: 5,
             page: 1,
+            paginationLength: 1,
         };
     },
   
@@ -112,9 +113,11 @@
         async getAll() {
             try{
                 this.isLoading = true;
+                this.page = 1;
                 let clientes = await this.$api.get(`api/cliente`);
 
                 this.clientes = await clientes.data;
+                this.paginationLength = Math.ceil(this.clientes.length/this.itemsPerPage);
                 this.$print(this.clientes);
                 this.isLoading = false;
 
