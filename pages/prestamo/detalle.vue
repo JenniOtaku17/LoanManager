@@ -134,11 +134,11 @@
                       </template>
                     </v-data-table>
                   </v-card-text>
-                  <v-row class="px-5">
+                  <v-row class="px-5" v-if="pagos">
                       <v-pagination
                           v-model="page"
                           class="my-4"
-                          :length="paginationLength"
+                          :length="pagos.length"
                           circle
                           :total-visible="6"
                       ></v-pagination>

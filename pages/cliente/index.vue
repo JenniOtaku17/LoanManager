@@ -56,11 +56,11 @@
                 </template>
               </v-data-table>
             </v-card-text>
-            <v-row class="px-5">
+            <v-row class="px-5" v-if="filteredClientes">
                 <v-pagination
                     v-model="page"
                     class="my-4"
-                    :length="paginationLength"
+                    :length="filteredClientes.length"
                     circle
                     :total-visible="6"
                 ></v-pagination>
@@ -105,7 +105,6 @@
             editable: null,
             itemsPerPage: 5,
             page: 1,
-            paginationLength: 1,
         };
     },
   

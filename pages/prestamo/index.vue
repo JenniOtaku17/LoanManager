@@ -61,11 +61,11 @@
                 </template>
               </v-data-table>
             </v-card-text>
-            <v-row class="px-5">
+            <v-row class="px-5" v-if="filteredPrestamos">
                 <v-pagination
                     v-model="page"
                     class="my-4"
-                    :length="paginationLength"
+                    :length="filteredPrestamos.length"
                     circle
                     :total-visible="6"
                 ></v-pagination>
