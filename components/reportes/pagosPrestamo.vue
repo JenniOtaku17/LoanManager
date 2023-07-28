@@ -42,7 +42,8 @@
     },
 
     props: [
-        "reporte"
+        "reporte",
+        "title"
     ],
   
     data() {
@@ -96,7 +97,7 @@
                 rows: rows
             }
 
-            toExcel("Reporte de pagos", data, false);
+            toExcel(this.title, data, false);
             },
         },
   };

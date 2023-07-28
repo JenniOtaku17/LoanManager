@@ -154,7 +154,7 @@
         async deletePrestamo(prestamo){
             try{
 
-                let result = await this.$confirm('Va a eliminar un préstamo', `Está seguro que desea eliminar al préstamo ${prestamo.nombre}?`)
+                let result = await this.$confirm('Va a eliminar un préstamo', `Está seguro que desea eliminar el préstamo ${prestamo.prestamoId}?`)
                 if(result.isConfirmed){
                     await this.$api.put("api/prestamo/changestatus/"+prestamo.prestamoId );
                     this.getAll();

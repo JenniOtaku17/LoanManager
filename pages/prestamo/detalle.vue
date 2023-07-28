@@ -105,7 +105,7 @@
               </v-tab-item>
 
               <v-tab-item class="pt-8">
-                  <v-row class="px-4">
+                  <v-row class="">
                       <v-col cols="12" sm="8">
                       </v-col>
                       <v-col cols="12" sm="4" class="text-right">
@@ -123,8 +123,8 @@
                         <tbody>
                           <tr v-for="item in items" class="puntero" :key="item.pagoId">
                               <td>{{ item.pagoId }}</td>
-                              <td align="end">{{ numberFormat(item.monto) }}</td>
                               <td align="center">{{ formatDate(item.fc, false) }}</td>
+                              <td align="end">{{ numberFormat(item.monto) }}</td>
                               <td align="center">
                                 <v-btn class="elevation-0" color="secondary" icon small @click="openPago(true, item)"><v-icon>mdi-pencil-circle-outline</v-icon></v-btn>
                                 <v-btn class="elevation-0" color="error" icon small @click="deletePago(item)"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
@@ -186,8 +186,8 @@
             prestamo: null,
             headers: [
                 { text: "Código", value: 'pagoId' },
-                { text: "Monto", value: "monto", align: 'end' },
                 { text: "Fecha", value: "fc", align: 'center' },
+                { text: "Monto", value: "monto", align: 'end' },
                 { text: "Acciones", align:'center', sortable: false }
             ],
             dialog: false,

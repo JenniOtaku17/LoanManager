@@ -66,7 +66,7 @@
                                 </template>
                                 <v-date-picker
                                     v-model="prestamo.fecha"
-                                    no-title
+                                    no-title color="primary"
                                     scrollable
                                 >
                                     <v-spacer></v-spacer>
@@ -104,7 +104,7 @@
                                 </template>
                                 <v-date-picker
                                     v-model="prestamo.fechaFin"
-                                    no-title
+                                    no-title color="primary"
                                     scrollable
                                 >
                                     <v-spacer></v-spacer>
@@ -185,6 +185,8 @@
       if(this.editable){
         this.title = "Editar préstamo"
         this.prestamo = this.editable;
+        this.prestamo.fecha= this.prestamo.fecha.replace("T00:00:00","");
+        this.prestamo.fechaFin = this.prestamo.fechaFin.replace("T00:00:00","");
       }
       this.mounted = true;
 

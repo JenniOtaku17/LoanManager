@@ -52,7 +52,8 @@
     },
 
     props: [
-        "reporte"
+        "reporte",
+        "title"
     ],
   
     data() {
@@ -136,7 +137,7 @@
                 rows: rows
             }
 
-            toExcel("Reporte de préstamos del cliente", data, false);
+            toExcel(this.title, data, false);
             },
         },
   };

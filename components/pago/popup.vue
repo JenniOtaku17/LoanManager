@@ -1,6 +1,6 @@
 <template>
     <div v-if="mounted">
-      <v-dialog v-model="activador" width="650" persistent>
+      <v-dialog v-model="activador" width="400" persistent>
         <v-card class="pagoPopup">
             <v-card-title>
                 <h3 class="primary--text">{{title}}</h3>

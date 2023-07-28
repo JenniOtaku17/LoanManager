@@ -46,7 +46,7 @@
                                 </template>
                                 <v-date-picker
                                     v-model="cliente.fechaNacimiento"
-                                    no-title
+                                    no-title color="primary"
                                     scrollable
                                 >
                                     <v-spacer></v-spacer>
@@ -130,6 +130,7 @@
       if(this.editable){
         this.title = "Editar Cliente"
         this.cliente = this.editable;
+        this.cliente.fechaNacimiento = this.cliente.fechaNacimiento.replace("T00:00:00","");
       }
       this.mounted = true;
 

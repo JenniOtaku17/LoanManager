@@ -83,7 +83,7 @@
                                     <v-col cols="12" md="6">
                                         <span :class="$vuetify.theme.dark == true? 'titleText primary--text': 'titleText secondary--text'">Dirección: </span>
                                         <span class="descriptionText">
-                                            <span v-if="cliente.direccio">{{ cliente.direccion }}</span>
+                                            <span v-if="cliente.direccion">{{ cliente.direccion }}</span>
                                             <span v-else>Sin registrar</span>
                                         </span>
                                     </v-col>

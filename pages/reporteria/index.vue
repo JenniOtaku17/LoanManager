@@ -99,7 +99,7 @@
         </v-col>
         <v-col cols="12" md="3" class="py-0" v-if="tipoReporte == 'pagosPrestamo'">
             <span class="inputTitle" >Prestamo</span>
-            <v-select v-model="prestamo" dense outlined class="textFieldCustom" color="secondary" :items="prestamos" item-text="concepto" item-value="prestamoId" append-icon="mdi-chevron-down"></v-select>
+            <v-select v-model="prestamo" dense outlined class="textFieldCustom" color="secondary" :items="prestamos" :item-text="nombrePrestamo" item-value="prestamoId" append-icon="mdi-chevron-down"></v-select>
         </v-col>
         <v-col cols="12" md="1" class="py-0">
             <v-btn fab elevation="0" :disabled="isLoading" style="border-radius: 50%;" small color="primary white--text" id="generar" @click="getReport()">
@@ -109,9 +109,9 @@
       </v-row>
   
       <div v-if="reporte">
-        <balancePrestamos v-if="tipoReporte == 'balancePrestamos'" :reporte="reporte"/>
-        <pagosPrestamo v-if="tipoReporte == 'pagosPrestamo'" :reporte="reporte"/>
-        <prestamosCliente v-if="tipoReporte == 'prestamosCliente'" :reporte="reporte"/>
+        <balancePrestamos v-if="tipoReporte == 'balancePrestamos'" :reporte="reporte" :title="title"/>
+        <pagosPrestamo v-if="tipoReporte == 'pagosPrestamo'" :reporte="reporte" :title="title"/>
+        <prestamosCliente v-if="tipoReporte == 'prestamosCliente'" :reporte="reporte" :title="title"/>
       </div>
 
     </v-container>
@@ -141,6 +141,7 @@
     watch: {
         tipoReporte(){
             this.reporte = null;
+            this.title = null;
         }
     },
   
@@ -162,12 +163,15 @@
             hasta: null,
             cliente: null,
             prestamo: null,
-            reporte: null
+            reporte: null,
+            title: null,
         };
     },
   
     methods: {
         nombreCompleto: item => item.nombre + ' ' + item.apellido,
+
+        nombrePrestamo: item => item.prestamoId + ' - ' + item.concepto,
 
         async getReport() {
             try{
@@ -180,14 +184,17 @@
                     }
                     let reporte = await this.$api.post(`api/report/balance_prestamos`, data);
                     this.reporte = reporte.data;
+                    this.title = `Balance de préstamos desde ${this.formatDate(this.desde,false).replaceAll("/","-")} hasta ${this.formatDate(this.hasta,false).replaceAll("/","-")}`;
 
                 }else if(this.tipoReporte == 'pagosPrestamo'){
                     let reporte = await this.$api.get(`api/report/pagos_prestamos/${this.prestamo}`);
-                    this.reporte = reporte.data?.prestamo?.pagos;
+                    this.reporte = reporte.data?.prestamo?.pagos.filter(x=> x.estado == true);
+                    this.title = `Pagos del préstamo ${reporte.data?.prestamo?.prestamoId}`;
 
                 }else if(this.tipoReporte == 'prestamosCliente'){
                     let reporte = await this.$api.get(`api/report/prestamos_cliente/${this.cliente}`);
                     this.reporte = reporte.data?.cliente?.prestamos;
+                    this.title = `Préstamos de ${reporte.data?.cliente?.nombre} ${reporte.data?.cliente?.apellido}`;
 
                 }
                 this.$print(this.reporte);
@@ -236,14 +243,11 @@
             }
             
         },
-    
-        actualizar( toUpdate ) {
-            if(toUpdate){
-                this.getAll();
-            }
-            this.dialog = false;
-            this.editable = null;
+
+        formatDate( date, hours){
+            return this.$formatDate(date, hours);
         },
+
   
     },
   };
