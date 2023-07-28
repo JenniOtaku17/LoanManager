@@ -183,11 +183,11 @@
 
                 }else if(this.tipoReporte == 'pagosPrestamo'){
                     let reporte = await this.$api.get(`api/report/pagos_prestamos/${this.prestamo}`);
-                    this.reporte = reporte.data;
+                    this.reporte = reporte.data?.prestamo?.pagos;
 
                 }else if(this.tipoReporte == 'prestamosCliente'){
                     let reporte = await this.$api.get(`api/report/prestamos_cliente/${this.cliente}`);
-                    this.reporte = reporte.data;
+                    this.reporte = reporte.data?.cliente?.prestamos;
 
                 }
                 this.$print(this.reporte);
